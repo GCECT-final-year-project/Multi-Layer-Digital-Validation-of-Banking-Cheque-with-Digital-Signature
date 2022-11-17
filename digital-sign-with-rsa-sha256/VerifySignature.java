@@ -42,6 +42,7 @@ public class VerifySignature {
 
         } catch (Exception e) {
             // TODO: handle exception
+            System.out.println(e);
         }
     }
 
