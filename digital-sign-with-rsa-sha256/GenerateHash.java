@@ -6,66 +6,69 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+//program for generate Hash with SHA-256 Algorithm
+//generateHash(String inputFilePath, String outputFilePath) method takes in the following parameters 
+// 1. path to input file which will be hashed 2. path to output file where the hash will be stored (both are text files )
 
 public class GenerateHash {
-    public static void generateHash(String inputFilePath, String OutputFilePath) throws IOException, NoSuchAlgorithmException{
+    public static void generateHash(String inputFilePath, String OutputFilePath)
+            throws IOException, NoSuchAlgorithmException {
         File file = new File(inputFilePath);
- 
+
         // Creating an object of BufferedReader class
-        BufferedReader br
-            = new BufferedReader(new FileReader(file));
- 
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
         // Declaring a string variable
-        String input="";
+        String input = "";
         String line;
         // Condition holds true till
         // there is character in a string
-        while ((line = br.readLine()) != null){
+        while ((line = br.readLine()) != null) {
             input += line;
         }
-            // Print the string
-            //System.out.println(input); // printing the original input
-            String hash=toHexString(getSHA(input));
-            //System.out.println(getSHA(input).length); //size of hash
-            //System.out.println(hash ); // printing the hash
-            // System.out.println(toHexString(getSHA("hi there")) );
-            Files.write(Paths.get(OutputFilePath), hash.getBytes());
+        // Print the string
+        // System.out.println(input); // printing the original input
+        String hash = toHexString(getSHA(input));
+        // System.out.println(getSHA(input).length); //size of hash
+        // System.out.println(hash ); // printing the hash
+        // System.out.println(toHexString(getSHA("hi there")) );
+        Files.write(Paths.get(OutputFilePath), hash.getBytes());
     }
+
     public static void main(String[] args) {
         try {
-            generateHash("digital-sign-with-rsa-sha256/Input/input.txt", "digital-sign-with-rsa-sha256/Input/hashed-input.txt");
-            
+            generateHash("digital-sign-with-rsa-sha256/Input/input.txt",
+                    "digital-sign-with-rsa-sha256/Input/hashed-input.txt");
+
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println(e);
         }
-        
+
     }
-    public static byte[] getSHA(String input) throws NoSuchAlgorithmException
-    {
+
+    public static byte[] getSHA(String input) throws NoSuchAlgorithmException {
         // Static getInstance method is called with hashing SHA
         MessageDigest md = MessageDigest.getInstance("SHA-256");
- 
+
         // digest() method called
         // to calculate message digest of an input
         // and return array of byte
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
-     
-    public static String toHexString(byte[] hash)
-    {
+
+    public static String toHexString(byte[] hash) {
         // Convert byte array into signum representation
         BigInteger number = new BigInteger(1, hash);
- 
+
         // Convert message digest into hex value
         StringBuilder hexString = new StringBuilder(number.toString(16));
- 
+
         // Pad with leading zeros
-        while (hexString.length() < 64)
-        {
+        while (hexString.length() < 64) {
             hexString.insert(0, '0');
         }
- 
+
         return hexString.toString();
     }
 }
