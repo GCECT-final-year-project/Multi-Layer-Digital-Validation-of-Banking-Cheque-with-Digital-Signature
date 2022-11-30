@@ -1,0 +1,175 @@
+## INSTRUCTIONS ##
+
+## Multi-Layer-Digital-Validation-of-Banking-Cheque-with-Digital-Signature
+
+GitHub Repository => 
+    https://github.com/GCECT-final-year-project/Multi-Layer-Digital-Validation-of-Banking-Cheque-with-Digital-Signature
+
+Contributors =>
+    1. Anubhab Das
+    2. Archit Kumar
+    3. Sathi Roy
+    4. Somnath Bera
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+##################################### 1. SETUP INSTRUCTIONS ########################################
+
+############### from ZIP file ==>
+    1. Extract the .zip file to your desired location
+    2. Open the extracted folder inside a code editor like VS Code / IntelliJ IDEA
+    3. Make sure you have jdk installed in your system (jdk 16 up preferred)
+    4. Install maven (Installation Instructions are in OCR IMPLEMENTATION part below)
+    5. Follow the below mentioned instructions
+
+
+                                            OR
+
+
+########### by cloning github Repository ==>
+    1. make sure git is installed in your system
+    2. open terminal and go to the directory where you want to clone the repository
+    3. the run this command =>
+        $ git clone https://github.com/GCECT-final-year-project/Multi-Layer-Digital-Validation-of-Banking-Cheque-with-Digital-Signature.git
+    4. $ cd Multi-Layer-Digital-Validation-of-Banking-Cheque-with-Digital-Signature
+    5. Open the project folder inside a code editor like VS Code / IntelliJ IDEA (eg. $ code .)
+    6. Make sure you have jdk installed in your system (jdk 16 up preferred)
+    7. Install maven (Installation Instructions are in OCR IMPLEMENTATION part below)
+    8. Follow the below mentioned instructions
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+##################################### 1.INSTRUCTIONS for OCR IMPLEMENTATION ########################################
+
+    ################ Installing Apache Maven
+        (jdk 1.7 up installed in the system)
+        1. download apache-maven zip from https://maven.apache.org/download.cgi
+        2. unzip the downloaded zip file
+        3. Add the bin directory of the created directory apache-maven-3.8.6 to the PATH environment variable
+        4. Confirm with mvn -v in a new shell. The result should look similar to ->
+
+            Apache Maven 3.8.6 (84538c9988a25aec085021c365c560670ad80f63)
+            Maven home: /opt/apache-maven-3.8.6
+            Java version: 1.8.0_45, vendor: Oracle Corporation
+            Java home: /Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre
+            Default locale: en_US, platform encoding: UTF-8
+            OS name: "mac os x", version: "10.8.5", arch: "x86_64", family: "mac"
+
+
+    ####### creating maven project
+        (In vscode/ eclipse )
+        1. create java project -> select maven project --> archtype-quickstart --> choose version --> choose domain --> choose project name --> choose dest. folder --> create project
+        2. press enter confirming things in the ide terminal
+        3. It will create a simple "Hello World" java project
+        3.Open the maven project
+        4. Open App.java (src/main/java/com/example/App.java) 
+        5. Test whether the program working by running it
+
+    ######### Installing tesseract dependencies
+        1. Open the pom.xml file
+        2. In the dependencies tag paste below 3 dependencies --> 
+            <dependency>
+                <groupId>net.sourceforge.tess4j</groupId>
+                <artifactId>tess4j</artifactId>
+                <version>5.4.0</version>
+                </dependency>
+                <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.36</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.7.21</version>
+            </dependency>
+
+        3.refresh the maven->dependencies --> select "yes" --> 
+        4. compile in the maven->Lifecycle-> ( clean --> validate --> compile )
+
+    #################### Tess4J
+        Tess4J is a java wrapper for the Tesseract APIs that provides OCR support for various image formats like JPEG, GIF, PNG and BMP. With Tess4J we can access the tesseract API in java.
+        Installation:
+        Step 1:	Download the Tess4J zip file from http://tess4j.sourceforge.net .
+        Step 2: Extract the zip file.
+
+
+
+    ########################### Code & Explanation
+        First, we have to create a new File object that represents the image data file.
+                File image = new File( “image_data.png” );
+        Then we have to create a Tesseract object to read data from the image file. Tesseract class is located in “net.sourceforge.tess4j” package. Before using the Tesseract class, we have to import that package. This package doesn’t come with standard java packages. This package comes with the Tess4J and located in a JAR file named “tess4j-x.y.z.jar”.
+                Tesseract tess = new Tesseract();
+        After instantiation of the Tesseract object, we have to set the trained dataset directory by calling the setDatapath() method of Tesseract class.
+                tess.setDatapath( “...../Tess4J/tessdata” );
+        Next, we have to set the language we want to recognize by calling the setLanguage() method of Tesseract class.
+                tess.setLanguage( “eng” );
+        Character recognition process is started with the invocation of doOCR() method of Tesseract class and pass the file object in method parameter. doOCR() method returns the recognized characters as a string object.
+                String text = Tess.doOCR( image );
+        Next, display the string data in standard output.
+                System.out.println( text ); 
+        Here is the complete code of the OCR program in java:
+            
+        import net.sourceforge.tess4j.*;
+        import java.io.*;
+        import javax.imageio.*;
+        import java.awt.image.*;
+        import java.awt.*;
+
+        class OCRtest{
+                public static void main(String args[]){
+                    try{
+                        File f = new File("image_data.png");
+                        Tesseract tess = new Tesseract();
+                        tess.setDatapath("/.../Tess4J/tessdata");
+                        tess.setLanguage("eng");
+                        String text = tess.doOCR(f);
+                        System.out.println(text);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+        }
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+################################ 2. INSTRUCTIONS for DIGITAL SINGATURE IMPLEMENTATION ################################
+    ## SHA-256 is used for generating Message Digest (MD)
+    ## RSA is used for ENCRYPTION and DECRYPTION
+
+
+    ## input --> directory where input and it's MD is stored
+    ## Keys --> directory where the key pair is stored
+    ## Output --> directory where the Digital Signature is stored
+    ## Recieved --> directory where the recieved input and public key are located which are shared by the user
+    ## Verification --> directory where the decrypted digital signature, Hashed recieved input and Verification results are stored
+
+
+
+
+    GenerateKeyPair.java --> RSA key pair (privateKey.key and publicKey.pub) generation method
+    GenerateHash.java --> MD calculation
+    DigitalSign.java --> DigitalSignature generating method from MD by using privateKey.key
+    VerifySignature.java --> VerifySignature method by using publicKey.key and dig-sign.txt 
+
+
+    ############### EXECUTION ==>
+
+        1. Generate key pair (privateKey.key and publicKey.pub) for only once by executing the GenerateKeyPair.java's main method
+        2. Generate DigitalSignature from the input by executing the DigitalSig.java's main method
+        3. copy the input file and publicKey.key to the Recieved directory
+        4. Verify Signature by executing the VerifySignature.java's main method
+
+
+
+
